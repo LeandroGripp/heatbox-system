@@ -63,7 +63,8 @@ wchar_t INDICATOR_STATE_ID[] = L"Bucket Brigade.Boolean";
 void main(void)
 {
 	IOPCServer* pIOPCServer = NULL;   //pointer to IOPServer interface
-	IOPCItemMgt* pIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface
+	IOPCItemMgt* pDataIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface of the data group
+	IOPCItemMgt* pParamsIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface of the params group
 
 	OPCHANDLE hServerHeatboxDataGroup; // server handle to the group that reads
 	OPCHANDLE hServerHeatboxParamsGroup; // server handle to the group that writes
@@ -83,7 +84,7 @@ void main(void)
 	// Add the OPC group the OPC server and get an handle to the IOPCItemMgt
 	//interface:
 	printf("Adding a group in the INACTIVE state for the moment...\n");
-	AddGroup(HEATBOX_DATA_GROUP_NAME, pIOPCServer, pIOPCItemMgt, hServerHeatboxDataGroup);
+	AddGroup(HEATBOX_DATA_GROUP_NAME, pIOPCServer, pDataIOPCItemMgt, hServerHeatboxDataGroup);
 
 	// Add the OPC item. First we have to convert from wchar_t* to char*
 	// in order to print the item name in the console.
@@ -93,23 +94,23 @@ void main(void)
 
 	// Add the items one by one to guarantee their order in the callback
 	// messages.
-	AddItem(HOTBOX_IDENTIFIER_ID, VT_I2, pIOPCItemMgt, hServerItem);
-	AddItem(RAILWAY_COMPOSITION_ID, VT_BSTR, pIOPCItemMgt, hServerItem);
-	AddItem(TEMPERATURE_ID, VT_R4, pIOPCItemMgt, hServerItem);
-	AddItem(ALARM_ID, VT_I4, pIOPCItemMgt, hServerItem);
-	AddItem(DATETIME_ID, VT_BSTR, pIOPCItemMgt, hServerItem);
+	AddItem(HOTBOX_IDENTIFIER_ID, VT_I2, pDataIOPCItemMgt, hServerItem);
+	AddItem(RAILWAY_COMPOSITION_ID, VT_BSTR, pDataIOPCItemMgt, hServerItem);
+	AddItem(TEMPERATURE_ID, VT_R4, pDataIOPCItemMgt, hServerItem);
+	AddItem(ALARM_ID, VT_I4, pDataIOPCItemMgt, hServerItem);
+	AddItem(DATETIME_ID, VT_BSTR, pDataIOPCItemMgt, hServerItem);
 
-	AddGroup(HEATBOX_PARAMS_GROUP_NAME, pIOPCServer, pIOPCItemMgt, hServerHeatboxParamsGroup);
+	AddGroup(HEATBOX_PARAMS_GROUP_NAME, pIOPCServer, pParamsIOPCItemMgt, hServerHeatboxParamsGroup);
 
-	AddItem(INDICATOR_IDENTIFIER_ID, VT_I1, pIOPCItemMgt, hServerItem);
+	AddItem(INDICATOR_IDENTIFIER_ID, VT_I1, pParamsIOPCItemMgt, hServerItem);
 
 	// TESTE DE ESCRITA SÍNCRONA. AINDA NÃO FUNCIONA
-	// VARIANT valToWrite;
-	// VariantInit(&valToWrite);
-	// valToWrite.iVal = 13;
-	// valToWrite.vt = VT_I1;
+	 VARIANT valToWrite;
+	 VariantInit(&valToWrite);
+	 valToWrite.iVal = 0;
+	 valToWrite.vt = VT_I1;
 
-	// WriteItem(pIOPCItemMgt, hServerHeatboxParamsGroup, valToWrite, pIOPCServer);
+	 WriteItem(pParamsIOPCItemMgt, hServerItem, valToWrite, pIOPCServer);
 
 	//VARIANT varValue; //to store the read value
 	//VariantInit(&varValue);
@@ -143,7 +144,7 @@ void main(void)
 	// Change the group to the ACTIVE state so that we can receive the
 	// server´s callback notification
 	printf("Changing the group state to ACTIVE...\n");
-	SetGroupActive(pIOPCItemMgt);
+	SetGroupActive(pDataIOPCItemMgt);
 
 	// Enters a message pump in order to process the server´s callback
 	// notifications. This is needed because the CoInitialize() function
@@ -197,12 +198,12 @@ void main(void)
 	pSOCDataCallback->AddRef();
 
 	printf("Setting up the IConnectionPoint callback connection...\n");
-	SetDataCallback(pIOPCItemMgt, pSOCDataCallback, pIConnectionPoint, &dwCookie);
+	SetDataCallback(pDataIOPCItemMgt, pSOCDataCallback, pIConnectionPoint, &dwCookie);
 
 	// Change the group to the ACTIVE state so that we can receive the
 	// server´s callback notification
 	printf("Changing the group state to ACTIVE...\n");
-	SetGroupActive(pIOPCItemMgt);
+	SetGroupActive(pDataIOPCItemMgt);
 
 	// Enter again a message pump in order to process the server´s callback
 	// notifications, for the same reason explained before.
@@ -230,10 +231,12 @@ void main(void)
 	//printf("Removing the OPC item...\n");
 	//RemoveItem(pIOPCItemMgt, hServerItem);
 
-	// Remove the OPC group:
-	printf("Removing the OPC group object...\n");
-	pIOPCItemMgt->Release();
+	// Remove the OPC groups:
+	printf("Removing the OPC group objects...\n");
+	pDataIOPCItemMgt->Release();
+	pParamsIOPCItemMgt->Release();
 	RemoveGroup(pIOPCServer, hServerHeatboxDataGroup);
+	RemoveGroup(pIOPCServer, hServerHeatboxParamsGroup);
 
 	// release the interface references:
 	printf("Removing the OPC server object...\n");

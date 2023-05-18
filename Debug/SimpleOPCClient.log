@@ -1,5 +1,5 @@
 ﻿cl : Command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
   OPCClient.cpp
-d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\simpleopcclient_vs_community\opcclient.cpp(73): warning C4101: 'buf': unreferenced local variable
-d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\simpleopcclient_vs_community\opcclient.cpp(72): warning C4101: 'i': unreferenced local variable
-  SimpleOPCClient.vcxproj -> D:\Arquivos\Documents\Estudo\UFMG\2023-1\Sistemas Distribuídos para Automação\Trabalho sockets e OPC\2017\SimpleOPCClient_VS_Community\Debug\SimpleOPCClient.exe
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\opcclient.cpp(74): warning C4101: 'buf': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\opcclient.cpp(73): warning C4101: 'i': unreferenced local variable
+  SimpleOPCClient.vcxproj -> D:\Arquivos\Documents\Estudo\UFMG\2023-1\Sistemas Distribuídos para Automação\Trabalho sockets e OPC\2017\heatbox-system\Debug\SimpleOPCClient.exe
