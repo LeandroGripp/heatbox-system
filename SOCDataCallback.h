@@ -13,6 +13,22 @@
 #ifndef _SOCDATACALLBACK_H
 #define _SOCDATACALLBACK_H
 
+//typedef struct ItemHandles {
+//	OPCHANDLE hServerHotboxIdentifier;
+//	OPCHANDLE hServerRailwayComposition;
+//	OPCHANDLE hServerTemperature;
+//	OPCHANDLE hServerAlarm;
+//	OPCHANDLE hServerDatetime;
+//} ItemHandles;
+
+typedef enum {
+	H_HOTBOX_IDENTIFIER = 1,
+	H_RAILWAY_COMPOSITION,
+	H_TEMPERATURE,
+	H_ALARM,
+	H_DATETIME
+} ClientItemHandles;
+
 // **************************************************************************
 class SOCDataCallback : public IOPCDataCallback
 	{

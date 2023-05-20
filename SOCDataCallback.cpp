@@ -119,28 +119,35 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 		printf("IOPCDataCallback::ONDataChange: invalid arguments.\n");
 		return (E_INVALIDARG);
 	}
-	
+
 	// Loop over items:
-	//printf("dwCount is %d \n", dwCount);
-	//// Int2
-	//printf("%d \n", pvValues[0].intVal);
-	//// String
-	//printf("%ls \n", pvValues[1].bstrVal);
-	//// Real4
-	//printf("%6.2f \n", pvValues[2].fltVal);
-	//// Int4
-	//printf("%ld \n", pvValues[3].intVal);
-	//// Time
-	/*LPSYSTEMTIME lp;
-	VariantTimeToSystemTime(pvValues[4].date, lp);
-	printf("%s", (char*)lp);*/
-	
-
-
 	for (DWORD dwItem = 0; dwItem < dwCount; dwItem++)
 	{
 		// Print the item value, quality and time stamp. In this example, only
 		// a few OPC data types are supported.
+
+		switch (phClientItems[dwItem]) 
+		{
+			case H_HOTBOX_IDENTIFIER:
+				printf("Hotbox ID: ");
+				break;
+			case H_RAILWAY_COMPOSITION:
+				printf("Railway composition:: ");
+				break;
+			case H_TEMPERATURE:
+				printf("Temperature: ");
+				break;
+			case H_ALARM:
+				printf("Alarm: ");
+				break;
+			case H_DATETIME:
+				printf("Datetime: ");
+				break;
+			default:
+				printf("Unidentified data \n");
+				continue;
+		}
+
 		status = VarToStr(pvValues[dwItem], buffer);
 		if (status){
 			printf("Data callback: Value = %s", buffer);

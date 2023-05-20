@@ -43,7 +43,7 @@ using namespace std;
 // them. The one below refers to the OPC DA 1.0 IDataObject interface.
 UINT OPC_DATA_TIME = RegisterClipboardFormat(_T("OPCSTMFORMATDATATIME"));
 
-wchar_t HEATBOX_DATA_GROUP_NAME[] = L"HotboxInfo";
+wchar_t HOTBOX_DATA_GROUP_NAME[] = L"HotboxInfo";
 
 wchar_t HOTBOX_IDENTIFIER_ID[] = L"Random.Int2";
 wchar_t RAILWAY_COMPOSITION_ID[] = L"Random.String";
@@ -60,14 +60,26 @@ wchar_t INDICATOR_STATE_ID[] = L"Bucket Brigade.Boolean";
 //////////////////////////////////////////////////////////////////////
 // Read the value of an item on an OPC server. 
 //
-void main(void)
+void mainOpc(void)
 {
 	IOPCServer* pIOPCServer = NULL;   //pointer to IOPServer interface
 	IOPCItemMgt* pDataIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface of the data group
 	IOPCItemMgt* pParamsIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface of the params group
 
 	OPCHANDLE hServerHeatboxDataGroup; // server handle to the group that reads
+
+	OPCHANDLE hServerHotboxIdentifier;
+	OPCHANDLE hServerRailwayComposition;
+	OPCHANDLE hServerTemperature;
+	OPCHANDLE hServerAlarm;
+	OPCHANDLE hServerDatetime;
+
 	OPCHANDLE hServerHeatboxParamsGroup; // server handle to the group that writes
+
+	OPCHANDLE hServerIndicatorIdentifier;
+	OPCHANDLE hServerIndicatorType;
+	OPCHANDLE hServerIndicatorState;
+
 	OPCHANDLE hServerItem;  // server handle to the item
 
 	int i;
@@ -84,27 +96,21 @@ void main(void)
 	// Add the OPC group the OPC server and get an handle to the IOPCItemMgt
 	//interface:
 	printf("Adding a group in the INACTIVE state for the moment...\n");
-	AddGroup(HEATBOX_DATA_GROUP_NAME, pIOPCServer, pDataIOPCItemMgt, hServerHeatboxDataGroup);
-
-	// Add the OPC item. First we have to convert from wchar_t* to char*
-	// in order to print the item name in the console.
-	// size_t m;
-	// wcstombs_s(&m, buf, 100, ITEM_ID, _TRUNCATE);
-	// printf("Adding the item %s to the group...\n", buf);
+	AddGroup(HOTBOX_DATA_GROUP_NAME, pIOPCServer, pDataIOPCItemMgt, hServerHeatboxDataGroup);
 
 	// Add the items one by one to guarantee their order in the callback
 	// messages.
-	AddItem(HOTBOX_IDENTIFIER_ID, VT_I2, pDataIOPCItemMgt, hServerItem);
-	AddItem(RAILWAY_COMPOSITION_ID, VT_BSTR, pDataIOPCItemMgt, hServerItem);
-	AddItem(TEMPERATURE_ID, VT_R4, pDataIOPCItemMgt, hServerItem);
-	AddItem(ALARM_ID, VT_I4, pDataIOPCItemMgt, hServerItem);
-	AddItem(DATETIME_ID, VT_BSTR, pDataIOPCItemMgt, hServerItem);
+	AddItem(HOTBOX_IDENTIFIER_ID, VT_I2, pDataIOPCItemMgt, hServerHotboxIdentifier, H_HOTBOX_IDENTIFIER);
+	AddItem(RAILWAY_COMPOSITION_ID, VT_BSTR, pDataIOPCItemMgt, hServerRailwayComposition, H_RAILWAY_COMPOSITION);
+	AddItem(TEMPERATURE_ID, VT_R4, pDataIOPCItemMgt, hServerTemperature, H_TEMPERATURE);
+	AddItem(ALARM_ID, VT_I4, pDataIOPCItemMgt, hServerAlarm, H_ALARM);
+	AddItem(DATETIME_ID, VT_BSTR, pDataIOPCItemMgt, hServerDatetime, H_DATETIME);
 
 	AddGroup(HEATBOX_PARAMS_GROUP_NAME, pIOPCServer, pParamsIOPCItemMgt, hServerHeatboxParamsGroup);
 
-	AddItem(INDICATOR_IDENTIFIER_ID, VT_I1, pParamsIOPCItemMgt, hServerItem);
+	AddItem(INDICATOR_IDENTIFIER_ID, VT_I1, pParamsIOPCItemMgt, hServerItem, 6);
 
-	// TESTE DE ESCRITA SÍNCRONA. AINDA NÃO FUNCIONA
+	// TESTE DE ESCRITA SÍNCRONA
 	 VARIANT valToWrite;
 	 VariantInit(&valToWrite);
 	 valToWrite.iVal = 0;
@@ -321,7 +327,7 @@ void AddGroup(wchar_t* groupName, IOPCServer* pIOPCServer, IOPCItemMgt* &pIOPCIt
 // is pointed by pIOPCItemMgt pointer. Return a server opc handle
 // to the item.
 
-void AddItem(wchar_t* itemName, VARTYPE itemType, IOPCItemMgt* pIOPCItemMgt, OPCHANDLE &hServerItem)
+void AddItem(wchar_t* itemName, VARTYPE itemType, IOPCItemMgt* pIOPCItemMgt, OPCHANDLE &hServerItem, OPCHANDLE clientHandle)
 {
 	HRESULT hr;
 
@@ -338,7 +344,7 @@ void AddItem(wchar_t* itemName, VARTYPE itemType, IOPCItemMgt* pIOPCItemMgt, OPC
 			/*szAccessPath*/ L"",
 			/*szItemID*/ itemName,
 			/*bActive*/ TRUE,
-			/*hClient*/ 1,
+			/*hClient*/ clientHandle,
 			/*dwBlobSize*/ 0,
 			/*pBlob*/ NULL,
 			/*vtRequestedDataType*/ itemType,
