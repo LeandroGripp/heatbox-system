@@ -71,7 +71,7 @@ int main()
 	// Obtém um handle para a saída da console, para mudar as cores
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE)
-		printf("Erro ao obter handle para a saída da console\n");
+		printf("Erro ao obter handle para a saida da console\n");
 
 	// ==================================================================
    // LOOP PRINCIPAL - CRIA SOCKET E AGUARDA CONEXÃO DO CLIENTE
@@ -88,9 +88,9 @@ int main()
 			SetConsoleTextAttribute(hOut, WHITE);
 			status = WSAGetLastError();
 			if (status == WSAENETDOWN)
-				printf("Rede inacessível!\n");
+				printf("Rede inacessivel!\n");
 			else
-				printf("Falha na chamada da função socket: codigo de erro = %d\n", status);
+				printf("Falha na chamada da funcao socket: codigo de erro = %d\n", status);
 			SetConsoleTextAttribute(hOut, WHITE);
 			WSACleanup();
 			exit(0);
@@ -102,7 +102,7 @@ int main()
 		status = bind(s, (SOCKADDR *)&ServerAddr, sizeof(ServerAddr));
 		if (status == SOCKET_ERROR) {
 			SetConsoleTextAttribute(hOut, HLRED);
-			printf("Falha na chamada da função bind ! Erro  = %d\n", WSAGetLastError());
+			printf("Falha na chamada da funcao bind ! Erro  = %d\n", WSAGetLastError());
 			SetConsoleTextAttribute(hOut, WHITE);
 			WSACleanup();
 			closesocket(s);
@@ -112,7 +112,7 @@ int main()
 		status = listen(s, 5);
 		if (status == SOCKET_ERROR) {
 			SetConsoleTextAttribute(hOut, HLRED);
-			printf("Falha na chamada da função listen ! Erro  = %d\n", WSAGetLastError());
+			printf("Falha na chamada da funcao listen ! Erro  = %d\n", WSAGetLastError());
 			SetConsoleTextAttribute(hOut, WHITE);
 			WSACleanup();
 			closesocket(s);
@@ -122,10 +122,11 @@ int main()
 		new_s = accept(s, NULL, NULL); //endereço do cliente ignorado
 		if (new_s == INVALID_SOCKET) {
 			SetConsoleTextAttribute(hOut, HLRED);
-			printf("Falha na chamada da função accept ! Erro  = %d\n", WSAGetLastError());
+			printf("Falha na chamada da funcao accept ! Erro  = %d\n", WSAGetLastError());
 			SetConsoleTextAttribute(hOut, WHITE);
 			WSACleanup();
 			closesocket(s);
+			closesocket(new_s);
 			exit(0);
 		}
 
@@ -166,7 +167,7 @@ int main()
 						strncpy(msgcode, buf, 2);
 						msgcode[2] = 0x00;
 						SetConsoleTextAttribute(hOut, HLRED);
-						printf("Codigo incorreto de mensagem de comandos de sinalização (parâmetros): recebido '%s' em vez de '00'\n", msgcode);
+						printf("Codigo incorreto de mensagem de comandos de sinalizacao (parametros): recebido '%s' em vez de '00'\n", msgcode);
 						printf("Encerrando o programa...\n");
 						closesocket(s);
 						closesocket(new_s);
@@ -177,8 +178,8 @@ int main()
 					/* recebe a mensagem de comandos de sinalização*/
 					strncpy(msgpar, buf, TAMMSGPAR);
 					msgpar[TAMMSGPAR] = 0x00;
-					SetConsoleTextAttribute(hOut, YELLOW);
-					printf("Mensagem de comandos recebida do Centro de Operações:\n%s\n\n",
+					SetConsoleTextAttribute(hOut, MAGENTA);
+					printf("Mensagem de comandos recebida do Centro de Operacoes:\n%s\n\n",
 						msgpar);
 
 					/* Envia ACK ao Centro de Operações */
@@ -187,8 +188,8 @@ int main()
 					status = send(new_s, msgackclp, TAMMSGACK, 0);
 					if (status == TAMMSGACK) {
 						msgackclp[TAMMSGACK] = 0x00;
-						SetConsoleTextAttribute(hOut, HLBLUE);
-						printf("Mensagem de ACK enviada ao Centro de Operações [%s]:\n%s\n\n",
+						SetConsoleTextAttribute(hOut, MAGENTA);
+						printf("Mensagem de ACK enviada ao Centro de Operacoes [%s]:\n%s\n\n",
 							ipaddr, msgackclp);
 					}
 					else {
@@ -200,7 +201,7 @@ int main()
 							status = WSAGetLastError();
 							printf("Falha no SEND (3): codigo de erro = %d\n", status);
 						}
-						printf("Tentando reconexão ..\n\n");
+						printf("Tentando reconexao ..\n\n");
 						break;
 					}
 				}
@@ -211,7 +212,7 @@ int main()
 						strncpy(msgcode, buf, 2);
 						msgcode[2] = 0x00;
 						SetConsoleTextAttribute(hOut, HLRED);
-						printf("Codigo incorreto de mensagem de requisição de dados recebido '%s' em vez de '99'\n", msgcode);
+						printf("Codigo incorreto de mensagem de requisicao de dados recebido '%s' em vez de '99'\n", msgcode);
 						printf("Encerrando o programa...\n");
 						closesocket(s);
 						closesocket(new_s);
@@ -223,8 +224,8 @@ int main()
 					/* recebe a mensagem de comandos de sinalização*/
 					strncpy(msgreq, buf, TAMMSGREQ);
 					msgreq[TAMMSGREQ] = 0x00;
-					SetConsoleTextAttribute(hOut, YELLOW);
-					printf("Mensagem de requisição de dados recebida do Centro de Operações:\n%s\n\n",
+					SetConsoleTextAttribute(hOut, HLGREEN);
+					printf("Mensagem de requisicao de dados recebida do Centro de Operacoes:\n%s\n\n",
 						msgreq);
 
 					/* envio de dados para o Centro de Operações*/
@@ -232,9 +233,9 @@ int main()
 					memcpy(&msgdados[3], buf, 6);
 					status = send(new_s, msgdados, TAMMSGDADOS, 0);
 					if (status == TAMMSGDADOS) {
-						msgack[TAMMSGDADOS] = 0x00;
-						SetConsoleTextAttribute(hOut, MAGENTA);
-						printf("Mensagem de dados enviada ao Centro de operações:\n%s\n\n",
+						msgdados[TAMMSGDADOS] = 0x00;
+						SetConsoleTextAttribute(hOut, YELLOW);
+						printf("Mensagem de dados enviada ao Centro de Operacoes:\n%s\n\n",
 							msgdados);
 					}
 					else {
@@ -246,7 +247,7 @@ int main()
 							status = WSAGetLastError();
 							printf("Falha no SEND (3): codigo de erro = %d\n", status);
 						}
-						printf("Tentando reconexão ..\n\n");
+						printf("Tentando reconexao ..\n\n");
 						break;
 					}
 
@@ -258,7 +259,7 @@ int main()
 							strncpy(msgcode, buf, 2);
 							msgcode[2] = 0x00;
 							SetConsoleTextAttribute(hOut, HLRED);
-							printf("Codigo incorreto de mensagem de ACK: recebido '%s' ao inves de '33'\n", msgcode);
+							printf("Codigo incorreto de mensagem de ACK: recebido '%s' em vez de '33'\n", msgcode);
 							printf("Encerrando o programa...\n");
 							closesocket(s);
 							closesocket(new_s);
@@ -269,7 +270,7 @@ int main()
 						sscanf(&buf[3], "%6d", &nseqr);
 						if (++nseql != nseqr) {
 							SetConsoleTextAttribute(hOut, HLRED);
-							printf("Numero sequencial de mensagem incorreto [1]: recebido %d ao inves de %d.\n",
+							printf("Numero sequencial de mensagem incorreto [1]: recebido %d em vez de %d.\n",
 								nseqr, nseql);
 							printf("Encerrando o programa...\n");
 							closesocket(s);
@@ -280,8 +281,8 @@ int main()
 						}
 						strncpy(msgack, buf, TAMMSGACK);
 						msgack[TAMMSGACK] = 0x00;
-						SetConsoleTextAttribute(hOut, MAGENTA);
-						printf("Mensagem de ACK recebida do CLP [%s]:\n%s\n\n", ipaddr, msgackclp);
+						SetConsoleTextAttribute(hOut, HLBLUE);
+						printf("Mensagem de ACK recebida do Centro de Operacoes :\n%s\n\n", msgack);
 					}
 					else {
 						SetConsoleTextAttribute(hOut, HLRED);
@@ -312,7 +313,7 @@ int main()
 					else printf("Erro no RECV (2)! codigo de erro = %d\n", status);
 				}
 				else {
-					printf("RECV (2) retornou um número inválido de bytes. \n");
+					printf("RECV (2) retornou um número invalido de bytes. \n");
 				}
 				printf("Tentando reconexao...\n\n");
 				break;
