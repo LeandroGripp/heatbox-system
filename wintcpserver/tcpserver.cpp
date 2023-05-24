@@ -182,6 +182,11 @@ int main()
 					printf("Mensagem de comandos recebida do Centro de Operacoes:\n%s\n\n",
 						msgpar);
 
+					/********************************************************
+					* AQUI QUE DEVE ENTREGAR OS DADOS PARA O OPC A PARTIR	*
+					* DA MENSAGEM RECEBIDA EM "msgpar"						*
+					********************************************************/
+
 					/* Envia ACK ao Centro de Operações */
 					sprintf(buf, "%06d", ++nseql);
 					memcpy(&msgackclp[3], buf, 6);
@@ -221,7 +226,7 @@ int main()
 						exit(0);
 					}
 
-					/* recebe a mensagem de comandos de sinalização*/
+					/* recebe a mensagem de requisicao de dados*/
 					strncpy(msgreq, buf, TAMMSGREQ);
 					msgreq[TAMMSGREQ] = 0x00;
 					SetConsoleTextAttribute(hOut, HLGREEN);
@@ -229,6 +234,12 @@ int main()
 						msgreq);
 
 					/* envio de dados para o Centro de Operações*/
+
+					/********************************************************
+					* AQUI QUE DEVE LER OS DADOS DO OPC E MONTAR A MENSAGEM *
+					* ELA SERA MONTADA EM "msgdados"					    *
+					********************************************************/
+
 					sprintf(buf, "%06d", ++nseql);
 					memcpy(&msgdados[3], buf, 6);
 					status = send(new_s, msgdados, TAMMSGDADOS, 0);
