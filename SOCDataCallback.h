@@ -9,17 +9,10 @@
 // 
 
 #include "opcda.h"
+#include "Orchestrator.h"
 
 #ifndef _SOCDATACALLBACK_H
 #define _SOCDATACALLBACK_H
-
-//typedef struct ItemHandles {
-//	OPCHANDLE hServerHotboxIdentifier;
-//	OPCHANDLE hServerRailwayComposition;
-//	OPCHANDLE hServerTemperature;
-//	OPCHANDLE hServerAlarm;
-//	OPCHANDLE hServerDatetime;
-//} ItemHandles;
 
 typedef enum {
 	H_HOTBOX_IDENTIFIER = 1,
@@ -33,7 +26,7 @@ typedef enum {
 class SOCDataCallback : public IOPCDataCallback
 	{
 	public:
-		SOCDataCallback ();
+		SOCDataCallback (DataForThreads *dataForThreads);
 		~SOCDataCallback ();
 
 		// IUnknown Methods
@@ -80,6 +73,9 @@ class SOCDataCallback : public IOPCDataCallback
 
 	private:
 		DWORD m_cnRef;
+		HotboxData *data;
+		MutexOwner *mutexOwner;
+		HANDLE *ghMutex;
 	};
 
 

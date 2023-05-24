@@ -1,14 +1,14 @@
+#include <string>
+
 #ifndef ORCHESTRATOR_H
 #define ORCHESTRATOR_H
 
-#include <string>
-
 typedef struct HotboxData {
 	short hotboxIdentifier;
-	std::string railwayComposition;
+	char railwayComposition[100];
 	float temperature;
 	long alarm;
-	std::string datetime;
+	char datetime[100];
 } HotboxData;
 
 typedef enum {

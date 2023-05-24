@@ -60,8 +60,11 @@ wchar_t INDICATOR_STATE_ID[] = L"Bucket Brigade.Boolean";
 //////////////////////////////////////////////////////////////////////
 // Read the value of an item on an OPC server. 
 //
-void mainOpc(void)
+DWORD WINAPI OpcClient(LPVOID dataForThreads)
 {
+	DataForThreads *data;
+	data = (DataForThreads*)dataForThreads;
+
 	IOPCServer* pIOPCServer = NULL;   //pointer to IOPServer interface
 	IOPCItemMgt* pDataIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface of the data group
 	IOPCItemMgt* pParamsIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface of the params group
@@ -98,8 +101,7 @@ void mainOpc(void)
 	printf("Adding a group in the INACTIVE state for the moment...\n");
 	AddGroup(HOTBOX_DATA_GROUP_NAME, pIOPCServer, pDataIOPCItemMgt, hServerHeatboxDataGroup);
 
-	// Add the items one by one to guarantee their order in the callback
-	// messages.
+	// Add the items one by one.
 	AddItem(HOTBOX_IDENTIFIER_ID, VT_I2, pDataIOPCItemMgt, hServerHotboxIdentifier, H_HOTBOX_IDENTIFIER);
 	AddItem(RAILWAY_COMPOSITION_ID, VT_BSTR, pDataIOPCItemMgt, hServerRailwayComposition, H_RAILWAY_COMPOSITION);
 	AddItem(TEMPERATURE_ID, VT_R4, pDataIOPCItemMgt, hServerTemperature, H_TEMPERATURE);
@@ -113,7 +115,7 @@ void mainOpc(void)
 	// TESTE DE ESCRITA SÍNCRONA
 	 VARIANT valToWrite;
 	 VariantInit(&valToWrite);
-	 valToWrite.iVal = 0;
+	 valToWrite.iVal = 5;
 	 valToWrite.vt = VT_I1;
 
 	 WriteItem(pParamsIOPCItemMgt, hServerItem, valToWrite, pIOPCServer);
@@ -200,7 +202,7 @@ void mainOpc(void)
 	// setup the callback.
 	IConnectionPoint* pIConnectionPoint = NULL; //pointer to IConnectionPoint Interface
 	DWORD dwCookie = 0;
-	SOCDataCallback* pSOCDataCallback = new SOCDataCallback();
+	SOCDataCallback* pSOCDataCallback = new SOCDataCallback(data);
 	pSOCDataCallback->AddRef();
 
 	printf("Setting up the IConnectionPoint callback connection...\n");

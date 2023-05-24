@@ -14,9 +14,12 @@
 extern UINT OPC_DATA_TIME;
 
 //	Constructor.  Reference count is initialized to zero.
-SOCDataCallback::SOCDataCallback () : m_cnRef (0)
-	{
-	}
+SOCDataCallback::SOCDataCallback (DataForThreads *dataForThreads) : m_cnRef (0)
+{
+	data = &dataForThreads->hotboxData;
+	mutexOwner = &dataForThreads->mutexOwner;
+	ghMutex = &dataForThreads->ghMutex;
+}
 
 //	Destructor
 SOCDataCallback::~SOCDataCallback ()
@@ -120,59 +123,78 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 		return (E_INVALIDARG);
 	}
 
-	// Loop over items:
-	for (DWORD dwItem = 0; dwItem < dwCount; dwItem++)
+	// Wait for data to be available:
+	DWORD dwWaitResult = WaitForSingleObject(*ghMutex, INFINITE);
+	switch (dwWaitResult)
 	{
-		// Print the item value, quality and time stamp. In this example, only
-		// a few OPC data types are supported.
-
-		switch (phClientItems[dwItem]) 
+	case WAIT_OBJECT_0:
+		
+		// Loop over items:
+		for (DWORD dwItem = 0; dwItem < dwCount; dwItem++)
 		{
-			case H_HOTBOX_IDENTIFIER:
-				printf("Hotbox ID: ");
-				break;
-			case H_RAILWAY_COMPOSITION:
-				printf("Railway composition:: ");
-				break;
-			case H_TEMPERATURE:
-				printf("Temperature: ");
-				break;
-			case H_ALARM:
-				printf("Alarm: ");
-				break;
-			case H_DATETIME:
-				printf("Datetime: ");
-				break;
-			default:
-				printf("Unidentified data \n");
-				continue;
-		}
+			status = VarToStr(pvValues[dwItem], buffer);
+			if (status) {
+				switch (phClientItems[dwItem])
+				{
+				case H_HOTBOX_IDENTIFIER:
+					printf("Hotbox ID: ");
+					data->hotboxIdentifier = (short) atoi(buffer);
+					break;
+				case H_RAILWAY_COMPOSITION:
+					printf("Railway composition: ");
+					//data->railwayComposition = buffer;
+					strcpy(data->railwayComposition, buffer);
+					break;
+				case H_TEMPERATURE:
+					printf("Temperature: ");
+					data->temperature = (float) strtod(buffer, NULL);
+					break;
+				case H_ALARM:
+					printf("Alarm: ");
+					data->alarm = (long) strtol(buffer, NULL, 10);
+					break;
+				case H_DATETIME:
+					printf("Datetime: ");
+					//data->datetime = buffer;
+					strcpy(data->datetime, buffer);
+					break;
+				default:
+					printf("Unidentified data \n");
+					continue;
+				}
 
-		status = VarToStr(pvValues[dwItem], buffer);
-		if (status){
-			printf("Data callback: Value = %s", buffer);
-			quality = pwQualities [dwItem] & OPC_QUALITY_MASK;
-			if (quality == OPC_QUALITY_GOOD)
-				printf(" Quality: good");
-			else
-			    printf(" Quality: not good");
-			// Code below extracted from the Microsoft KB:
-			//     http://support.microsoft.com/kb/188768
-			// Note that in order for it to work, the Visual Studio C++ must
-			// be configured so that the "character set" property is "not set"
-			// (Project->Project Properties->Configuration Properties->General).
-			// Otherwise, if defined e.g. as "use Unicode" (as it seems to be
-			// the default when a new project is created), there will be
-			// compilation errors.
-			FileTimeToLocalFileTime(&pftTimeStamps [dwItem],&lft);
-			FileTimeToSystemTime(&lft, &st);
-			GetDateFormat(LOCALE_SYSTEM_DEFAULT, DATE_SHORTDATE, &st, NULL, szLocalDate, 255);
-			GetTimeFormat(LOCALE_SYSTEM_DEFAULT, 0, &st, NULL, szLocalTime, 255);
-			printf(" Time: %s %s\n", szLocalDate, szLocalTime);
+				printf("%s \n", buffer);
+				//quality = pwQualities [dwItem] & OPC_QUALITY_MASK;
+				//if (quality == OPC_QUALITY_GOOD)
+				//	printf(" Quality: good");
+				//else
+				//    printf(" Quality: not good");
+				//// Code below extracted from the Microsoft KB:
+				////     http://support.microsoft.com/kb/188768
+				//// Note that in order for it to work, the Visual Studio C++ must
+				//// be configured so that the "character set" property is "not set"
+				//// (Project->Project Properties->Configuration Properties->General).
+				//// Otherwise, if defined e.g. as "use Unicode" (as it seems to be
+				//// the default when a new project is created), there will be
+				//// compilation errors.
+				//FileTimeToLocalFileTime(&pftTimeStamps [dwItem],&lft);
+				//FileTimeToSystemTime(&lft, &st);
+				//GetDateFormat(LOCALE_SYSTEM_DEFAULT, DATE_SHORTDATE, &st, NULL, szLocalDate, 255);
+				//GetTimeFormat(LOCALE_SYSTEM_DEFAULT, 0, &st, NULL, szLocalTime, 255);
+				//printf(" Time: %s %s\n", szLocalDate, szLocalTime);
+			}
+			else printf("IOPCDataCallback: Unsupported item type\n");
 		}
-		else printf ("IOPCDataCallback: Unsupported item type\n");
+		ReleaseMutex(*ghMutex);
+		printf("-------------------------------------------------\n");
+		
+	// The thread got ownership of an abandoned mutex
+	// The database is in an indeterminate state
+	case WAIT_ABANDONED:
+		return FALSE;
 	}
-	printf("-------------------------------------------------\n");
+
+	
 
 	// Return "success" code.  Note this does not mean that there were no 
 	// errors reported by the OPC Server, only that we successfully processed

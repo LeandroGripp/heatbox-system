@@ -22,6 +22,8 @@
 // luizt at cpdee.ufmg.br
 //
 
+#include "opcda.h"
+
 #ifndef OPC_CLIENT_H
 #define OPC_CLIENT_H
 
@@ -29,6 +31,7 @@ IOPCServer *InstantiateServer(wchar_t ServerName[]);
 void AddGroup(wchar_t* groupName, IOPCServer* pIOPCServer, IOPCItemMgt* &pIOPCItemMgt,
 	OPCHANDLE& hServerGroup);
 void AddItem(wchar_t* itemName, VARTYPE itemType, IOPCItemMgt* pIOPCItemMgt, OPCHANDLE &hServerItem, OPCHANDLE clientHandle);
+DWORD WINAPI OpcClient(LPVOID dataForThreads);
 void ReadItem(IUnknown* pGroupIUnknown, OPCHANDLE hServerItem, VARIANT& varValue);
 void RemoveItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE hServerItem);
 void RemoveGroup(IOPCServer* pIOPCServer, OPCHANDLE hServerGroup);
