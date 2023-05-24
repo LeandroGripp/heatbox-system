@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleOPCClient", "SimpleOP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcpclient", "wintcpclient\tcpclient.vcxproj", "{2BDEF50F-8426-D190-B935-D25E29AD3152}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcpserver", "..\tcpserver\tcpserver.vcxproj", "{D0902A83-A28D-4E8E-BEB4-6B645FEEC9E0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcpserver", "wintcpserver\tcpserver.vcxproj", "{D0902A83-A28D-4E8E-BEB4-6B645FEEC9E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
