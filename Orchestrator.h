@@ -11,15 +11,34 @@ typedef struct HotboxData {
 	char datetime[100];
 } HotboxData;
 
+typedef struct HotboxParams {
+	short indicatorIdentifier;
+	short indicatorType;
+	bool indicatorState;
+} HotboxParams;
+
 typedef enum {
+	NO_OWNER,
 	SOCKET_SERVER,
 	OPC_CLIENT
 } MutexOwner;
 
+typedef enum {
+	NO_REQ,
+	WRITE_REQUESTED,
+	WRITING,
+	WRITE_FINISHED
+} WriteReqState;
+
 typedef struct DataForThreads {
 	HotboxData hotboxData;
-	MutexOwner mutexOwner;
-	HANDLE ghMutex;
+	MutexOwner dataMutexOwner;
+	HANDLE dataMutex;
+
+	HotboxParams hotboxParams;
+	MutexOwner paramsMutexOwner;
+	HANDLE paramsMutex;
+	WriteReqState writeReqState;
 } DataForThreads;
 
 #endif ORCHESTRATOR_H

@@ -58,10 +58,13 @@ wchar_t INDICATOR_TYPE_ID[] = L"Bucket Brigade.Int2";
 wchar_t INDICATOR_STATE_ID[] = L"Bucket Brigade.Boolean";
 
 //////////////////////////////////////////////////////////////////////
-// Read the value of an item on an OPC server. 
+// OPC Client that reads asynchrounously from an OPC Server and writes
+// synchronously to it.
 //
 DWORD WINAPI OpcClient(LPVOID dataForThreads)
 {
+	// Cast the received params to the right type. Params passed to threads need to be of type
+	// void pointer and need, therefore, to be cast.
 	DataForThreads *data;
 	data = (DataForThreads*)dataForThreads;
 
@@ -83,118 +86,37 @@ DWORD WINAPI OpcClient(LPVOID dataForThreads)
 	OPCHANDLE hServerIndicatorType;
 	OPCHANDLE hServerIndicatorState;
 
-	OPCHANDLE hServerItem;  // server handle to the item
-
 	int i;
 	char buf[100];
 
 	// Have to be done before using microsoft COM library:
 	printf("Initializing the COM environment...\n");
-	CoInitialize(NULL);
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 	// Let's instantiante the IOPCServer interface and get a pointer of it:
 	printf("Instantiating the MATRIKON OPC Server for Simulation...\n");
 	pIOPCServer = InstantiateServer(OPC_SERVER_NAME);
 
-	// Add the OPC group the OPC server and get an handle to the IOPCItemMgt
-	//interface:
-	printf("Adding a group in the INACTIVE state for the moment...\n");
+	// Add the OPC group to the OPC server and get an handle to the IOPCItemMgt
+	// interface:
+	printf("Adding the group of data to be read asynchronously as active...\n");
 	AddGroup(HOTBOX_DATA_GROUP_NAME, pIOPCServer, pDataIOPCItemMgt, hServerHeatboxDataGroup);
+	SetGroupActive(pDataIOPCItemMgt);
 
-	// Add the items one by one.
+	// Add the items to be read one by one.
 	AddItem(HOTBOX_IDENTIFIER_ID, VT_I2, pDataIOPCItemMgt, hServerHotboxIdentifier, H_HOTBOX_IDENTIFIER);
 	AddItem(RAILWAY_COMPOSITION_ID, VT_BSTR, pDataIOPCItemMgt, hServerRailwayComposition, H_RAILWAY_COMPOSITION);
 	AddItem(TEMPERATURE_ID, VT_R4, pDataIOPCItemMgt, hServerTemperature, H_TEMPERATURE);
 	AddItem(ALARM_ID, VT_I4, pDataIOPCItemMgt, hServerAlarm, H_ALARM);
 	AddItem(DATETIME_ID, VT_BSTR, pDataIOPCItemMgt, hServerDatetime, H_DATETIME);
 
+	// Repeat the process, but for the items to be written to.
+	printf("Adding the group of data do be written to synchronously as inactive... \n");
 	AddGroup(HEATBOX_PARAMS_GROUP_NAME, pIOPCServer, pParamsIOPCItemMgt, hServerHeatboxParamsGroup);
 
-	AddItem(INDICATOR_IDENTIFIER_ID, VT_I1, pParamsIOPCItemMgt, hServerItem, 6);
-
-	// TESTE DE ESCRITA SÍNCRONA
-	 VARIANT valToWrite;
-	 VariantInit(&valToWrite);
-	 valToWrite.iVal = 5;
-	 valToWrite.vt = VT_I1;
-
-	 WriteItem(pParamsIOPCItemMgt, hServerItem, valToWrite, pIOPCServer);
-
-	//VARIANT varValue; //to store the read value
-	//VariantInit(&varValue);
-	//ReadItem(pIOPCItemMgt, hServerItem, varValue);
-	//// print the read value:
-	//printf("Read value: %d\n", varValue.iVal);
-
-	//Synchronous read of the device´s item value.
-	//VARIANT varValue; //to store the read value
-	//VariantInit(&varValue);
-	//printf("Reading synchronously during 10 seconds...\n");
-	//for (i = 0; i < 10; i++) {
-	//	ReadItem(pIOPCItemMgt, hServerItem, varValue);
-	//	// print the read value:
-	//	printf("Read value: %6.2f\n", varValue.fltVal);
-	//	// wait 1 second
-	//	Sleep(1000);
-	//}
-
-	//// Establish a callback asynchronous read by means of the old IAdviseSink()
-	//// (OPC DA 1.0) method. We first instantiate a new SOCAdviseSink object and
-	//// adjusts its reference count, and then call a wrapper function to
-	//// setup the callback.
-	//IDataObject* pIDataObject = NULL; //pointer to IDataObject interface
-	//DWORD tkAsyncConnection = 0;
-	//SOCAdviseSink* pSOCAdviseSink = new SOCAdviseSink();
-	//pSOCAdviseSink->AddRef();
-	//printf("Setting up the IAdviseSink callback connection...\n");
-	//SetAdviseSink(pIOPCItemMgt, pSOCAdviseSink, pIDataObject, &tkAsyncConnection);
-
-	// Change the group to the ACTIVE state so that we can receive the
-	// server´s callback notification
-	printf("Changing the group state to ACTIVE...\n");
-	SetGroupActive(pDataIOPCItemMgt);
-
-	// Enters a message pump in order to process the server´s callback
-	// notifications. This is needed because the CoInitialize() function
-	// forces the COM threading model to STA (Single Threaded Apartment),
-	// in which, according to the MSDN, "all method calls to a COM object
-	// (...) are synchronized with the windows message queue for the
-	// single-threaded apartment's thread." So, even being a console
-	// application, the OPC client must process messages (which in this case
-	// are only useless WM_USER [0x0400] messages) in order to process
-	// incoming callbacks from a OPC server.
-	//
-	// A better alternative could be to use the CoInitializeEx() function,
-	// which allows one to  specifiy the desired COM threading model;
-	// in particular, calling
-	//        CoInitializeEx(NULL, COINIT_MULTITHREADED)
-	// sets the model to MTA (MultiThreaded Apartments) in which a message
-	// loop is __not required__ since objects in this model are able to
-	// receive method calls from other threads at any time. However, in the
-	// MTA model the user is required to handle any aspects regarding
-	// concurrency, since asynchronous, multiple calls to the object methods
-	// can occur.
-	//
-	int bRet;
-	MSG msg;
-	DWORD ticks1, ticks2;
-	//ticks1 = GetTickCount();
-	//printf("Waiting for IAdviseSink callback notifications during 10 seconds...\n");
-	//do {
-	//	bRet = GetMessage(&msg, NULL, 0, 0);
-	//	if (!bRet) {
-	//		printf("Failed to get windows message! Error code = %d\n", GetLastError());
-	//		exit(0);
-	//	}
-	//	TranslateMessage(&msg); // This call is not really needed ...
-	//	DispatchMessage(&msg);  // ... but this one is!
-	//	ticks2 = GetTickCount();
-	//} while ((ticks2 - ticks1) < 10000);
-
-	//// Cancel the callback and release its reference
-	//printf("Cancelling the IAdviseSink callback...\n");
-	//CancelAdviseSink(pIDataObject, tkAsyncConnection);
-	//pSOCAdviseSink->Release();
+	AddItem(INDICATOR_IDENTIFIER_ID, VT_I1, pParamsIOPCItemMgt, hServerIndicatorIdentifier, 1);
+	AddItem(INDICATOR_TYPE_ID, VT_I2, pParamsIOPCItemMgt, hServerIndicatorType, 1);
+	AddItem(INDICATOR_STATE_ID, VT_BOOL, pParamsIOPCItemMgt, hServerIndicatorState, 1);
 
 	// Establish a callback asynchronous read by means of the IOPCDaraCallback
 	// (OPC DA 2.0) method. We first instantiate a new SOCDataCallback object and
@@ -208,26 +130,48 @@ DWORD WINAPI OpcClient(LPVOID dataForThreads)
 	printf("Setting up the IConnectionPoint callback connection...\n");
 	SetDataCallback(pDataIOPCItemMgt, pSOCDataCallback, pIConnectionPoint, &dwCookie);
 
-	// Change the group to the ACTIVE state so that we can receive the
-	// server´s callback notification
-	printf("Changing the group state to ACTIVE...\n");
-	SetGroupActive(pDataIOPCItemMgt);
+	// Loop waiting for requests from the socket server.
+	// TODO: wait for escape sequence to break out of the while loop
+	while (1) {
+		// Check if there's a write request. If not, loop over.
+		if (data->writeReqState == WRITE_REQUESTED) {
+			WaitForSingleObject(data->paramsMutex, INFINITE);
+			data->paramsMutexOwner = OPC_CLIENT;
+			data->writeReqState = WRITING;
 
-	// Enter again a message pump in order to process the server´s callback
-	// notifications, for the same reason explained before.
+			printf("----------------------------------------------------------------\n");
+			printf("Data written synchronously to the OPC Server\n");
 
-	ticks1 = GetTickCount();
-	printf("Waiting for IOPCDataCallback notifications during 10 seconds...\n");
-	do {
-		bRet = GetMessage(&msg, NULL, 0, 0);
-		if (!bRet) {
-			printf("Failed to get windows message! Error code = %d\n", GetLastError());
-			exit(0);
+			// Create variants and write the values to the OPC Server.
+			HotboxParams *params = &data->hotboxParams;
+			VARIANT identifier, type, state;
+
+			VariantInit(&identifier);
+			identifier.iVal = params->indicatorIdentifier;
+			identifier.vt = VT_I1;
+			WriteItem(pParamsIOPCItemMgt, hServerIndicatorIdentifier, identifier, pIOPCServer);
+			printf("Indicator identifier: %d\n", params->indicatorIdentifier);
+
+			VariantInit(&type);
+			type.intVal = params->indicatorType;
+			type.vt = VT_I2;
+			WriteItem(pParamsIOPCItemMgt, hServerIndicatorType, type, pIOPCServer);
+			printf("Indicator type: %d\n", params->indicatorType);
+
+			VariantInit(&state);
+			state.intVal = params->indicatorState;
+			state.vt = VT_BOOL;
+			WriteItem(pParamsIOPCItemMgt, hServerIndicatorState, state, pIOPCServer);
+			printf("Indicator state: %s\n", params->indicatorType ? "TRUE" : "FALSE");
+
+			printf("----------------------------------------------------------------\n");
+
+			// Declare the writing finished and free the mutex.
+			data->writeReqState = WRITE_FINISHED;
+			data->paramsMutexOwner = NO_OWNER;
+			ReleaseMutex(data->paramsMutex);
 		}
-		TranslateMessage(&msg); // This call is not really needed ...
-		DispatchMessage(&msg);  // ... but this one is!
-		ticks2 = GetTickCount();
-	} while ((ticks2 - ticks1) < 10000);
+	}
 
 	// Cancel the callback and release its reference
 	printf("Cancelling the IOPCDataCallback notifications...\n");
@@ -235,11 +179,7 @@ DWORD WINAPI OpcClient(LPVOID dataForThreads)
 	//pIConnectionPoint->Release();
 	pSOCDataCallback->Release();
 
-	// Remove the OPC item:
-	//printf("Removing the OPC item...\n");
-	//RemoveItem(pIOPCItemMgt, hServerItem);
-
-	// Remove the OPC groups:
+	// Remove the OPC groups with their items:
 	printf("Removing the OPC group objects...\n");
 	pDataIOPCItemMgt->Release();
 	pParamsIOPCItemMgt->Release();
@@ -296,7 +236,7 @@ IOPCServer* InstantiateServer(wchar_t ServerName[])
 
 
 /////////////////////////////////////////////////////////////////////
-// Add group "Group1" to the Server whose IOPCServer interface
+// Add group <groupName> to the Server whose IOPCServer interface
 // is pointed by pIOPCServer. 
 // Returns a pointer to the IOPCItemMgt interface of the added group
 // and a server opc handle to the added group.
@@ -329,7 +269,8 @@ void AddGroup(wchar_t* groupName, IOPCServer* pIOPCServer, IOPCItemMgt* &pIOPCIt
 // is pointed by pIOPCItemMgt pointer. Return a server opc handle
 // to the item.
 
-void AddItem(wchar_t* itemName, VARTYPE itemType, IOPCItemMgt* pIOPCItemMgt, OPCHANDLE &hServerItem, OPCHANDLE clientHandle)
+void AddItem(wchar_t* itemName, VARTYPE itemType, IOPCItemMgt* pIOPCItemMgt,
+	OPCHANDLE &hServerItem, OPCHANDLE clientHandle)
 {
 	HRESULT hr;
 
@@ -412,6 +353,11 @@ void ReadItem(IUnknown* pGroupIUnknown, OPCHANDLE hServerItem, VARIANT& varValue
 	pIOPCSyncIO->Release();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Write to device the value of the item having the "hServerItem" server 
+// handle and belonging to the group whose one interface is pointed by
+// pGroupIUnknown.
+//
 void WriteItem(IUnknown* pGroupIUnknown, OPCHANDLE hServerItem, VARIANT varValue, IOPCServer* pIOPCServer)
 {
 	// get a pointer to the IOPCSyncIOInterface:
@@ -422,51 +368,6 @@ void WriteItem(IUnknown* pGroupIUnknown, OPCHANDLE hServerItem, VARIANT varValue
 	HRESULT* pErrors = NULL; //to store error code(s)
 	HRESULT hr = pIOPCSyncIO->Write(1, &hServerItem, &varValue, &pErrors);
 
-	printf("Status of hr is: ");
-	switch (hr) {
-		case S_OK:
-			printf("S_OK \n"); break;
-		case S_FALSE:
-			printf("S_FALSE \n"); break;
-		case E_FAIL:
-			printf("E_FAIL \n"); break;
-		case E_OUTOFMEMORY:
-			printf("E_OUTOFMEMORY \n"); break;
-		case E_INVALIDARG:
-			printf("E_INVALIDARG \n"); break;
-		default:
-			printf("Unknown state \n");
-	}
-
-	printf("Status of pError is: ");
-	switch (*pErrors) {
-	case S_OK:
-		printf("S_OK \n"); break;
-	case E_FAIL:
-		printf("E_FAIL \n"); break;
-	case OPC_S_CLAMP:
-		printf("OPC_S_CLAMP \n"); break;
-	case OPC_E_RANGE:
-		printf("OPC_E_RANGE \n"); break;
-	case OPC_E_BADTYPE:
-		printf("OPC_E_BADTYPE \n"); break;
-	case OPC_E_BADRIGHTS:
-		printf("OPC_E_BADRIGHTS \n"); break;
-	case OPC_E_INVALIDHANDLE:
-		printf("OPC_E_INVALIDHANDLE \n"); break;
-	case OPC_E_UNKNOWNITEMID:
-		printf("OPC_E_UNKNOWNITEMID \n"); break;
-	default:
-		printf("Unknown error \n");
-		//pIOPCServer->GetErrorString()
-
-
-		
-	}
-
-
-		
-	
 	_ASSERT(!hr);
 	//_ASSERT(pValue != NULL);
 }
