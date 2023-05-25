@@ -90,6 +90,7 @@ DWORD WINAPI OpcClient(LPVOID dataForThreads)
 	char buf[100];
 
 	// Have to be done before using microsoft COM library:
+	// MTA model to allow multiple threads to communicate in the process
 	printf("Initializing the COM environment...\n");
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
