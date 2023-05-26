@@ -17,7 +17,7 @@ extern UINT OPC_DATA_TIME;
 SOCDataCallback::SOCDataCallback (DataForThreads *dataForThreads) : m_cnRef (0)
 {
 	data = &dataForThreads->hotboxData;
-	mutexOwner = &dataForThreads->dataMutexOwner;
+	mutexOwner = &dataForThreads->mutexOwner;
 	ghMutex = &dataForThreads->dataMutex;
 }
 

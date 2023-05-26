@@ -10,6 +10,9 @@
 
 #include "Orchestrator.h"
 
+#ifndef SOCKET_SERVER_H
+#define SOCKET_SERVER_H
+
 #define WHITE   FOREGROUND_RED   | FOREGROUND_GREEN     | FOREGROUND_BLUE
 #define HLGREEN FOREGROUND_GREEN | FOREGROUND_INTENSITY
 #define HLRED   FOREGROUND_RED   | FOREGROUND_INTENSITY
@@ -28,9 +31,9 @@
 
 #define ESC		   0x1B
 
-# define IP_ADDR_LENGTH 15 //12 números no máximo, mais 3 pontos
+#define IP_ADDR_LENGTH 15 //12 números no máximo, mais 3 pontos
 #define SERVER_ADDRESS_STR "127.0.0.1" //servidor tem endereco fixo. loopback para testes
-#define SERVER_PORT 2222
+#define SERVER_PORT 3889
 
 #pragma warning(push)
 #pragma warning(disable:6031)
@@ -39,3 +42,5 @@
 /*****************************************************************************************/
 
 DWORD WINAPI SocketServer(LPVOID dataForThreads);
+
+#endif SOCKET_SERVER_H

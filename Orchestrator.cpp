@@ -1,3 +1,4 @@
+#include <winsock2.h>
 #include <windows.h>
 #include <tchar.h>
 #include <strsafe.h>
@@ -22,18 +23,12 @@ int main(void)
 		FALSE,             // initially not owned
 		NULL               // unnamed mutex
 	);
-	dataForThreads.paramsMutex = CreateMutex(
-		NULL,              // default security attributes
-		FALSE,             // initially not owned
-		NULL               // unnamed mutex
-	);
-	if (dataForThreads.dataMutex == NULL || dataForThreads.paramsMutex == NULL)
+	if (dataForThreads.dataMutex == NULL)
 	{
 		printf("CreateMutex error: %d\n", GetLastError());
 		return 1;
 	}
-	dataForThreads.dataMutexOwner = NO_OWNER;
-	dataForThreads.paramsMutexOwner = NO_OWNER;
+	dataForThreads.mutexOwner = NO_OWNER;
 	dataForThreads.writeReqState = NO_REQ;
 	
 	// Create thread that runs the socketServerFactory function.
@@ -61,7 +56,6 @@ int main(void)
 	CloseHandle(socketServerFactoryHandle);
 	CloseHandle(opcClientFactoryHandle);
 	CloseHandle(dataForThreads.dataMutex);
-	CloseHandle(dataForThreads.paramsMutex);
 }
 
 
@@ -99,15 +93,10 @@ DWORD WINAPI socketServerFactory()
 		// Wait for the thread to exit.
 		WaitForSingleObject(SocketServerHandle, INFINITE);
 		// Check if Mutex was corrupted and, if so, restore it
-		if (dataForThreads.dataMutexOwner == SOCKET_SERVER) {
+		if (dataForThreads.mutexOwner == SOCKET_SERVER) {
 			ReleaseMutex(dataForThreads.dataMutex);
 			dataForThreads.dataMutex = CreateMutex(NULL, FALSE, NULL);
-			dataForThreads.dataMutexOwner = NO_OWNER;
-		}
-		if (dataForThreads.paramsMutexOwner == SOCKET_SERVER) {
-			ReleaseMutex(dataForThreads.paramsMutex);
-			dataForThreads.paramsMutex = CreateMutex(NULL, FALSE, NULL);
-			dataForThreads.paramsMutexOwner = NO_OWNER;
+			dataForThreads.mutexOwner = NO_OWNER;
 		}
 		// Loop over and create a new thread, making sure we recover from failure.
 	}
@@ -130,15 +119,11 @@ DWORD WINAPI opcClientFactory()
 		// Wait for the thread to exit.
 		WaitForSingleObject(opcClientHandle, INFINITE);
 		// Check if Mutex was corrupted and, if so, restore it
-		if (dataForThreads.dataMutexOwner == OPC_CLIENT) {
+		dataForThreads.writeReqState = NO_REQ;
+		if (dataForThreads.mutexOwner == SOCKET_SERVER) {
 			ReleaseMutex(dataForThreads.dataMutex);
 			dataForThreads.dataMutex = CreateMutex(NULL, FALSE, NULL);
-			dataForThreads.dataMutexOwner = NO_OWNER;
-		}
-		if (dataForThreads.paramsMutexOwner == OPC_CLIENT) {
-			ReleaseMutex(dataForThreads.paramsMutex);
-			dataForThreads.paramsMutex = CreateMutex(NULL, FALSE, NULL);
-			dataForThreads.paramsMutexOwner = NO_OWNER;
+			dataForThreads.mutexOwner = NO_OWNER;
 		}
 		// Loop over and create a new thread, making sure we recover from failure.
 	}

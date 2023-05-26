@@ -32,12 +32,10 @@ typedef enum {
 
 typedef struct DataForThreads {
 	HotboxData hotboxData;
-	MutexOwner dataMutexOwner;
+	MutexOwner mutexOwner;
 	HANDLE dataMutex;
 
 	HotboxParams hotboxParams;
-	MutexOwner paramsMutexOwner;
-	HANDLE paramsMutex;
 	WriteReqState writeReqState;
 } DataForThreads;
 

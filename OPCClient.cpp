@@ -136,8 +136,8 @@ DWORD WINAPI OpcClient(LPVOID dataForThreads)
 	while (1) {
 		// Check if there's a write request. If not, loop over.
 		if (data->writeReqState == WRITE_REQUESTED) {
-			WaitForSingleObject(data->paramsMutex, INFINITE);
-			data->paramsMutexOwner = OPC_CLIENT;
+			WaitForSingleObject(data->dataMutex, INFINITE);
+			data->mutexOwner = OPC_CLIENT;
 			data->writeReqState = WRITING;
 
 			printf("----------------------------------------------------------------\n");
@@ -169,8 +169,8 @@ DWORD WINAPI OpcClient(LPVOID dataForThreads)
 
 			// Declare the writing finished and free the mutex.
 			data->writeReqState = WRITE_FINISHED;
-			data->paramsMutexOwner = NO_OWNER;
-			ReleaseMutex(data->paramsMutex);
+			data->mutexOwner = NO_OWNER;
+			ReleaseMutex(data->dataMutex);
 		}
 	}
 

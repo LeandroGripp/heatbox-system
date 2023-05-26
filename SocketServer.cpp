@@ -151,12 +151,13 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 					SetConsoleTextAttribute(hOut, MAGENTA);
 					printf("Mensagem de comandos recebida do Centro de Operacoes:\n%s\n\n",
 						msgpar);
+					SetConsoleTextAttribute(hOut, WHITE);
 
 					//-------------- Trecho com memoria compartilhada ---------------------------
 					
 					//solicita a escrita dos dados ao cliente OPC
-					WaitForSingleObject(data->paramsMutex, INFINITE);
-					data->paramsMutexOwner = SOCKET_SERVER;
+					WaitForSingleObject(data->dataMutex, INFINITE);
+					data->mutexOwner = SOCKET_SERVER;
 
 					//escreve na memoria compartilhada
 					strncpy(buf, &msgpar[10], TAMindicatorIdentifier);
@@ -176,12 +177,17 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 						data->hotboxParams.indicatorState = false;
 					}
 
-					data->paramsMutexOwner = NO_OWNER;
-					ReleaseMutex(data->paramsMutex);
+					data->mutexOwner = NO_OWNER;
+					ReleaseMutex(data->dataMutex);
 
 					//avisa o cliente OPC que houve uma solicitacao de escrita
 					data->writeReqState = WRITE_REQUESTED;
-					while (data->writeReqState != WRITE_FINISHED);
+					while (data->writeReqState != WRITE_FINISHED && data->writeReqState != NO_REQ);
+					if (data->writeReqState == NO_REQ) {
+						SetConsoleTextAttribute(hOut, HLRED);
+						printf("Cliente OPC finalizou com erro. Ignorando requisição. \n");
+						SetConsoleTextAttribute(hOut, WHITE);
+					}
 
 					data->writeReqState = NO_REQ;
 
@@ -196,6 +202,7 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 						SetConsoleTextAttribute(hOut, MAGENTA);
 						printf("Mensagem de ACK enviada ao Centro de Operacoes [%s]:\n%s\n\n",
 							ipaddr, msgackclp);
+						SetConsoleTextAttribute(hOut, WHITE);
 					}
 					else {
 						SetConsoleTextAttribute(hOut, HLRED);
@@ -238,7 +245,7 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 					//--------------------- Trecho com memoria compartilhada ------------------------------
 
 					WaitForSingleObject(data->dataMutex, INFINITE);
-					data->dataMutexOwner = SOCKET_SERVER;
+					data->mutexOwner = SOCKET_SERVER;
 					
 					//monta a mensagem a ser enviada
 					char strToPrint[100];
@@ -259,7 +266,7 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 					sprintf(buf, "%06d", ++nseql);
 					memcpy(&msgdados[3], buf, 6);
 
-					data->dataMutexOwner = NO_OWNER;
+					data->mutexOwner = NO_OWNER;
 					ReleaseMutex(data->dataMutex);
 
 					//--------------------- Fim do trecho com memoria compartilhada ------------------------------
@@ -317,6 +324,7 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 						msgack[TAMMSGACK] = 0x00;
 						SetConsoleTextAttribute(hOut, HLBLUE);
 						printf("Mensagem de ACK recebida do Centro de Operacoes :\n%s\n\n", msgack);
+						SetConsoleTextAttribute(hOut, WHITE);
 					}
 					else {
 						SetConsoleTextAttribute(hOut, HLRED);

@@ -1,0 +1,192 @@
+﻿  opcda_i.c
+  Orchestrator.cpp
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(103): warning C4005: 'AF_IPX': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(457): note: see previous definition of 'AF_IPX'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(147): warning C4005: 'AF_MAX': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(476): note: see previous definition of 'AF_MAX'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(185): warning C4005: 'SO_DONTLINGER': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(399): note: see previous definition of 'SO_DONTLINGER'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(235): error C2011: 'sockaddr': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1007): note: see declaration of 'sockaddr'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(437): error C2059: syntax error: 'constant'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(437): error C3805: 'constant': unexpected token, expected either '}' or a ','
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(572): warning C4005: 'IN_CLASSA': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(284): note: see previous definition of 'IN_CLASSA'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(578): warning C4005: 'IN_CLASSB': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(290): note: see previous definition of 'IN_CLASSB'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(584): warning C4005: 'IN_CLASSC': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(296): note: see previous definition of 'IN_CLASSC'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(595): warning C4005: 'INADDR_ANY': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(301): note: see previous definition of 'INADDR_ANY'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(597): warning C4005: 'INADDR_BROADCAST': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(303): note: see previous definition of 'INADDR_BROADCAST'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\ws2def.h(633): error C2011: 'sockaddr_in': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1011): note: see declaration of 'sockaddr_in'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(136): error C2011: 'fd_set': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1019): note: see declaration of 'fd_set'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(156): warning C4005: 'FD_CLR': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(94): note: see previous definition of 'FD_CLR'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(171): warning C4005: 'FD_SET': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(99): note: see previous definition of 'FD_SET'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(180): error C2011: 'timeval': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1035): note: see declaration of 'timeval'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(236): error C2011: 'hostent': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1023): note: see declaration of 'hostent'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(249): error C2011: 'netent': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(177): note: see declaration of 'netent'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(256): error C2011: 'servent': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1027): note: see declaration of 'servent'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(268): error C2011: 'protoent': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1031): note: see declaration of 'protoent'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(364): error C2011: 'WSAData': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(319): note: see declaration of 'WSAData'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(462): error C2011: 'sockproto': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(491): note: see declaration of 'sockproto'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(504): error C2011: 'linger': 'struct' type redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(1015): note: see declaration of 'linger'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(517): warning C4005: 'SOMAXCONN': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(541): note: see previous definition of 'SOMAXCONN'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(551): warning C4005: 'FD_READ': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(559): note: see previous definition of 'FD_READ'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(554): warning C4005: 'FD_WRITE': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(560): note: see previous definition of 'FD_WRITE'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(557): warning C4005: 'FD_OOB': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(561): note: see previous definition of 'FD_OOB'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(560): warning C4005: 'FD_ACCEPT': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(562): note: see previous definition of 'FD_ACCEPT'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(563): warning C4005: 'FD_CONNECT': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(563): note: see previous definition of 'FD_CONNECT'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(566): warning C4005: 'FD_CLOSE': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(564): note: see previous definition of 'FD_CLOSE'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1624): error C2375: 'accept': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(739): note: see declaration of 'accept'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1646): error C2375: 'bind': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(744): note: see declaration of 'bind'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1667): error C2375: 'closesocket': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(749): note: see declaration of 'closesocket'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1684): error C2375: 'connect': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(751): note: see declaration of 'connect'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1705): error C2375: 'ioctlsocket': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(756): note: see declaration of 'ioctlsocket'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1728): error C2375: 'getpeername': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(761): note: see declaration of 'getpeername'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1749): error C2375: 'getsockname': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(766): note: see declaration of 'getsockname'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1770): error C2375: 'getsockopt': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(771): note: see declaration of 'getsockopt'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1795): error C2375: 'htonl': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(778): note: see declaration of 'htonl'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1812): error C2375: 'htons': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(780): note: see declaration of 'htons'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1830): error C2375: 'inet_addr': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(782): note: see declaration of 'inet_addr'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1848): error C2375: 'inet_ntoa': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(784): note: see declaration of 'inet_ntoa'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1948): error C2375: 'listen': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(786): note: see declaration of 'listen'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1967): error C2375: 'ntohl': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(790): note: see declaration of 'ntohl'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(1984): error C2375: 'ntohs': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(792): note: see declaration of 'ntohs'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2001): error C2375: 'recv': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(794): note: see declaration of 'recv'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2024): error C2375: 'recvfrom': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(800): note: see declaration of 'recvfrom'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2051): error C2375: 'select': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(808): note: see declaration of 'select'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2076): error C2375: 'send': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(815): note: see declaration of 'send'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2099): error C2375: 'sendto': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(821): note: see declaration of 'sendto'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2126): error C2375: 'setsockopt': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(829): note: see declaration of 'setsockopt'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2151): error C2375: 'shutdown': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(836): note: see declaration of 'shutdown'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2171): error C2375: 'socket': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(840): note: see declaration of 'socket'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2196): error C2375: 'gethostbyaddr': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(847): note: see declaration of 'gethostbyaddr'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2218): error C2375: 'gethostbyname': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(852): note: see declaration of 'gethostbyname'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2235): error C2375: 'gethostname': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(854): note: see declaration of 'gethostname'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2275): error C2375: 'getservbyport': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(858): note: see declaration of 'getservbyport'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2294): error C2375: 'getservbyname': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(862): note: see declaration of 'getservbyname'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2313): error C2375: 'getprotobynumber': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(866): note: see declaration of 'getprotobynumber'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2330): error C2375: 'getprotobyname': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(868): note: see declaration of 'getprotobyname'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2350): error C2375: 'WSAStartup': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(872): note: see declaration of 'WSAStartup'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2370): error C2375: 'WSACleanup': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(876): note: see declaration of 'WSACleanup'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2387): error C2375: 'WSASetLastError': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(878): note: see declaration of 'WSASetLastError'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2404): error C2375: 'WSAGetLastError': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(880): note: see declaration of 'WSAGetLastError'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2425): error C2375: 'WSAIsBlocking': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(882): note: see declaration of 'WSAIsBlocking'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2443): error C2375: 'WSAUnhookBlockingHook': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(884): note: see declaration of 'WSAUnhookBlockingHook'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2461): error C2375: 'WSASetBlockingHook': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(886): note: see declaration of 'WSASetBlockingHook'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2479): error C2375: 'WSACancelBlockingCall': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(888): note: see declaration of 'WSACancelBlockingCall'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2497): error C2375: 'WSAAsyncGetServByName': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(890): note: see declaration of 'WSAAsyncGetServByName'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2525): error C2375: 'WSAAsyncGetServByPort': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(898): note: see declaration of 'WSAAsyncGetServByPort'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2553): error C2375: 'WSAAsyncGetProtoByName': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(906): note: see declaration of 'WSAAsyncGetProtoByName'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByNumber': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(913): note: see declaration of 'WSAAsyncGetProtoByNumber'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2605): error C2375: 'WSAAsyncGetHostByName': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(920): note: see declaration of 'WSAAsyncGetHostByName'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByAddr': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(927): note: see declaration of 'WSAAsyncGetHostByAddr'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2661): error C2375: 'WSACancelAsyncRequest': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(936): note: see declaration of 'WSACancelAsyncRequest'
+c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock2.h(2679): error C2375: 'WSAAsyncSelect': redefinition; different linkage
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\um\winsock.h(938): note: see declaration of 'WSAAsyncSelect'
+  OPCClient.cpp
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\opcclient.cpp(90): warning C4101: 'buf': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\opcclient.cpp(89): warning C4101: 'i': unreferenced local variable
+  SocketServer.cpp
+  SOCAdviseSink.cpp
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socadvisesink.cpp(309): error C2664: 'int GetDateFormatW(LCID,DWORD,const SYSTEMTIME *,LPCWSTR,LPWSTR,int)': cannot convert argument 5 from 'char [255]' to 'LPWSTR'
+  d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socadvisesink.cpp(309): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socadvisesink.cpp(310): error C2664: 'int GetTimeFormatW(LCID,DWORD,const SYSTEMTIME *,LPCWSTR,LPWSTR,int)': cannot convert argument 5 from 'char [255]' to 'LPWSTR'
+  d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socadvisesink.cpp(310): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+  SOCDataCallback.cpp
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(146): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(159): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(106): warning C4101: 'szLocalDate': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(104): warning C4101: 'lft': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(106): warning C4101: 'szLocalTime': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(105): warning C4101: 'st': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socdatacallback.cpp(109): warning C4101: 'quality': unreferenced local variable
+  SOCWrapperlFunctions.cpp
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(131): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(134): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(137): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(141): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(143): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(146): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(149): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(153): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(156): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socwrapperlfunctions.cpp(159): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1774): note: see declaration of 'sprintf'
