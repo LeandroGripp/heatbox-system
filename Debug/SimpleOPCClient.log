@@ -1,11 +1,15 @@
-﻿cl : Command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  Orchestrator.cpp
-d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socketserver.h(3): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-  d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\orchestrator.cpp: note: see previous definition of '_CRT_SECURE_NO_WARNINGS'
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (SimpleOPCClient.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+cl : Command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  opcda_i.c
+cl : Command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  SOCWrapperlFunctions.cpp
+  OPCClient.cpp
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\opcclient.cpp(90): warning C4101: 'buf': unreferenced local variable
+d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\opcclient.cpp(89): warning C4101: 'i': unreferenced local variable
   Generating Code...
-  Compiling...
+  Skipping... (no relevant changes detected)
+  SOCDataCallback.cpp
+  SOCAdviseSink.cpp
   SocketServer.cpp
-d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socketserver.h(3): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-  d:\arquivos\documents\estudo\ufmg\2023-1\sistemas distribuídos para automação\trabalho sockets e opc\2017\heatbox-system\socketserver.cpp: note: see previous definition of '_CRT_SECURE_NO_WARNINGS'
-  Generating Code...
-  SimpleOPCClient.vcxproj -> D:\Arquivos\Documents\Estudo\UFMG\2023-1\Sistemas Distribuídos para Automação\Trabalho sockets e OPC\2017\heatbox-system\Debug\SimpleOPCClient.exe
+  Orchestrator.cpp
+  SimpleOPCClient.vcxproj -> D:\Arquivos\Documents\Estudo\UFMG\2023-1\Sistemas Distribuídos para Automação\Trabalho sockets e OPC\2017\heatbox-system\Debug\OPCIntegrationService.exe
