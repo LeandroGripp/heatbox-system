@@ -168,9 +168,9 @@ DWORD WINAPI SocketServer (LPVOID dataForThreads) {
 					buf[TAMindicatorType] = 0x00;
 					data->hotboxParams.indicatorType = atoi(buf);
 
-					strncpy(buf, &msgpar[10], TAMindicatorState);
+					strncpy(buf, &msgpar[17], TAMindicatorState);
 					buf[TAMindicatorState] = 0x00;
-					if (buf == "TRUE ") {
+					if (strcmp(buf, "TRUE ") == 0) {
 						data->hotboxParams.indicatorState = true;
 					}
 					else { // nao verifica se e realmente FALSE
