@@ -4,6 +4,7 @@
 
 #include "Orchestrator.h"
 #include "OPCClient.h"
+#include "SocketServer.h"
 
 DWORD WINAPI opcClientFactory();
 DWORD WINAPI socketServerFactory();
@@ -63,69 +64,52 @@ int main(void)
 	CloseHandle(dataForThreads.paramsMutex);
 }
 
+
+/* NOTAS DO GABRIEL
+* 1.E preciso testar o caso em que o mutex está sob posse de alguem e a thread encerra inesperadamente.
+*	PRECISA TRATAR ESSE ERRO NA FUNCAO QUE RECBEU O MUTEX ABANDONADO! A OUTRA THREAD PODE ATRASAR E NAO ENTREGAR
+*	SLIDE 42 DE MULTITHREADING I (ATR)
+*	SLIDE 13 DE MULTITHREADING II (ATR)
+* 2.E preciso colocar o contador de numero sequencial de mensagens
+* 3.Para entregar a escrita para o OPC Client basta escrever no struct DataForThreads?
+* 4.Entender melhor como o OpcCLient conseguiu identificar a estrutura DataForThreads se ela nao foi declarada
+* 5.Esperar infinitamente pelo mutex depende de ngm travar na secao critica
+* 6.Simplesmente colocar uma mensagem de erro indicando que a thread encerrou e tentar cria-la de novo?
+* 7.Indicador de posse do mutex e apenas para depuracao?
+* 8.Pode recriar o mutex direto? Provavelmente vai so renovar o handle pq o mutex nao e destruido
+*	"ERROR_ALREADY_EXISTS" no retorno de CreateMutex()
+*/
+
 DWORD WINAPI socketServerFactory()
 {
-	// MOCK SOCKET SERVER
+	// SOCKET SERVER
 	// Issues periodic read and write requests to verify the OPC Client is working.
-	short i = 0;
+	HANDLE SocketServerHandle;
+	DWORD SocketServerThreadId;
 	while (1) {
-		// Part A: reads
-		// Waits for data to be read to be available and claims ownership of the mutex.
-		WaitForSingleObject(dataForThreads.dataMutex, INFINITE);
-		dataForThreads.dataMutexOwner = SOCKET_SERVER;
-
-		// Accesses the data, formats it and outputs it to the console.
-		HotboxData data = dataForThreads.hotboxData;
-
-		char strToPrint[100];
-		strncpy(strToPrint, data.railwayComposition, 10);
-		strToPrint[10] = 0;
-
-		float floatToPrint = ((int)data.temperature) % 10000 + (data.temperature - ((int)data.temperature));
-
-		printf("09|%06d|%03d|%-10s|%06.1f|%02d|%s\n",
-			1 % 1000000,
-			data.hotboxIdentifier % 1000,
-			strToPrint,
-			floatToPrint,
-			data.alarm % 100,
-			data.datetime);
-
-		// Frees access to the data.
-		dataForThreads.dataMutexOwner = NO_OWNER;
-		ReleaseMutex(dataForThreads.dataMutex);
-
-		Sleep(1000);
-
-		// Part B: writes
-
-		// Waits for writing data structure to be free and claims ownership of the mutex.
-		WaitForSingleObject(dataForThreads.paramsMutex, INFINITE);
-		dataForThreads.paramsMutexOwner = SOCKET_SERVER;
-
-		// Updates the data structure to have the values we want to write to the server.
-		dataForThreads.hotboxParams.indicatorIdentifier = ++i;
-		dataForThreads.hotboxParams.indicatorType = i;
-		dataForThreads.hotboxParams.indicatorState = !dataForThreads.hotboxParams.indicatorState;
-
-		// Frees the mutex, so that the OPCClient can gain access to the data structure.
-		dataForThreads.paramsMutexOwner = NO_OWNER;
-		ReleaseMutex(dataForThreads.paramsMutex);
-
-		// Makes the write request and waits for it to be finished.
-		// TODO: detect when the OPC Client thread finishes in the middle of the 
-		//		 process and recover.
-		dataForThreads.writeReqState = WRITE_REQUESTED;
-		while (dataForThreads.writeReqState != WRITE_FINISHED);
-
-		// Finishes the request process.
-		dataForThreads.writeReqState = NO_REQ;
-		
-		Sleep(1000);
-
-		// Create the thread that runs the socket server
-		// Wait for the thread to exit. 
-		// When it does, it loops over and creates a new one, making sure we recover from failure.
+		// Create the thread that runs the Socket Server
+		SocketServerHandle = CreateThread(
+			NULL,						   // default security attributes
+			0,							   // default stack size
+			(LPTHREAD_START_ROUTINE)SocketServer,
+			&dataForThreads,			   // thread function arguments
+			0,							   // default creation flags
+			&SocketServerThreadId			   // receive thread identifier
+		);
+		// Wait for the thread to exit.
+		WaitForSingleObject(SocketServerHandle, INFINITE);
+		// Check if Mutex was corrupted and, if so, restore it
+		if (dataForThreads.dataMutexOwner == SOCKET_SERVER) {
+			ReleaseMutex(dataForThreads.dataMutex);
+			dataForThreads.dataMutex = CreateMutex(NULL, FALSE, NULL);
+			dataForThreads.dataMutexOwner = NO_OWNER;
+		}
+		if (dataForThreads.paramsMutexOwner == SOCKET_SERVER) {
+			ReleaseMutex(dataForThreads.paramsMutex);
+			dataForThreads.paramsMutex = CreateMutex(NULL, FALSE, NULL);
+			dataForThreads.paramsMutexOwner = NO_OWNER;
+		}
+		// Loop over and create a new thread, making sure we recover from failure.
 	}
 }
 
